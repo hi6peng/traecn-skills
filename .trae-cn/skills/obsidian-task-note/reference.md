@@ -28,6 +28,24 @@
 ### priority
 `high` | `medium` | `low`（默认 `medium`）
 
+### project（规范命名，禁止自创写法）
+
+用户声明值须先按下表归一化，再填入；不在表中的新值，生成前与用户确认。
+
+| 规范值 | 别名 / 旧写法（禁止使用） |
+|---|---|
+| `GF-V10桌面-ZF整机` | V10-GF-ZF整机、ZF |
+| `GFKD2605` | V10-GF-GFKD2605 |
+| `GFKD2510` | — |
+| `GF-V10桌面-集采` | V10-GF-集采、GF-V10桌面-JICAI |
+| `GF-V10桌面-LA` / `GF-V10桌面-LA64` / `GF-V10桌面-ZFOS` | — |
+| `GF-V10桌面-20.1.6` / `GF-V10桌面-20.1.7` / `GF-V10桌面-020补丁` | — |
+| `GF-V10桌面-预研` / `GF-V10桌面-摸底` / `GF-V10桌面-信创` / `GF-V10桌面-维护` / `GF-V10桌面-适配` / `GF-V10桌面-掉电保护` | — |
+| `V11桌面-预研` / `V11服务器-预研` | V11（须确认桌面/服务器后归一） |
+| `GF-项目成果` / `GF-售前` / `GF-生态适配` | — |
+
+无法归一时填 `待确认`，并在正文中提示用户补充。
+
 ---
 
 ## 二、标签体系（3–5 个，小写，斜杠分层）
@@ -36,13 +54,16 @@
 `kylin/bug`、`kylin/task`、`kylin/cve`
 
 ### 技术分类
-`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`
+`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`、`performance`、`security`、`filesystem`、`memory`、`virtualization`、`accessibility`、`i18n`、`install`、`upgrade`、`stability`、`tty`、`live`
 
 ### 平台
 `platform/x86`、`platform/loongarch`、`platform/sw64`、`platform/arm`
 
 ### 硬件组件
-`component/gpu`、`component/nic`、`component/audio`、`component/storage`、`component/usb`
+`component/gpu`、`component/nic`、`component/audio`、`component/storage`、`component/usb`、`component/touchpad`、`component/battery`、`component/serial`
+
+### 分层专名
+具体技术名词必须挂类别分层，不得裸用：`driver/<驱动名>`（i915、loonggpu、mwv207…）、`tool/<工具名>`（lmbench、fio、glmark2…）、`software/<软件名>`（xorg-server、ukui-greeter…）、`graphics/<技术点>`（drm、hdmi、gamma…）；完整表见 `spec/标签规范.md`
 
 ### 优先级
 `priority/high`、`priority/medium`、`priority/low`
