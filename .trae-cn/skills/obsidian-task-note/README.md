@@ -1,4 +1,4 @@
-# obsidian-task-note v1.0.0
+# obsidian-task-note v1.0.1
 
 将用户粘贴的任务描述转换为符合团队规范的 Obsidian Markdown 任务笔记。
 
@@ -8,7 +8,8 @@
 - 输出：frontmatter + 标题 + 核心问题 + 分级结论 + 日期块，严格按团队规范
 - 文件名前缀由 type 决定：bug→`bug-xxx.md`、task→`task-xxx.md`、cve→`cve-xxx.md`、info→`info-xxx.md`
 - frontmatter `id` 与文件名强制一致
-- 12 条输出前校验（取值域/标签/日期/工时/分级结论）
+- 13 条输出前校验（取值域/标签/日期/工时/分级结论/结论段留空）
+- 分级结论段新建时为空（仅标题），无预填占位
 
 ## 目录结构
 
@@ -67,7 +68,7 @@ task_type: 分析
 2. 笔记全文（markdown code block）
 3. 待人工确认项（如 `contribution` 推断不确定、`task_id` 缺失）
 
-## 输出前校验（12 条）
+## 输出前校验（13 条）
 
 - [ ] frontmatter 取值域合规（status/type/task_type/priority）
 - [ ] status 只在 frontmatter，tags 无 `fixed`/`done` 等状态词
@@ -76,11 +77,12 @@ task_type: 分析
 - [ ] 日期 `## YYYY-MM-DD` 补零，三子标题精确无后缀
 - [ ] `工时: Nh` 在 `### 结果` 末行，格式固定
 - [ ] 块内子点用 `####`/加粗，无 `###` 抢层级
-- [ ] 文件名前缀与 `type` 一致
+- [ ] 文件名前缀与 `type` 一致（bug→`bug-`，task→`task-`，cve→`cve-`，info→`info-`）
 - [ ] frontmatter `id` 与文件名一致
 - [ ] `### 结果` 段非空（无结论也写"待验证"等说明）
 - [ ] `type=info` 时 tags 无 `kylin/info`，用 `reference`/`work`
-- [ ] 分级结论格式与 `type`+`task_type` 匹配
+- [ ] 分级结论格式与 `type`+`task_type` 匹配（见 reference.md 第七节）
+- [ ] 新建笔记分级结论段为空（仅标题），无"排查中/初步方向/计划动作"等预填
 
 ## 规则来源
 
@@ -99,13 +101,12 @@ task_type: 分析
 
 ## 版本
 
+- v1.0.1：新建笔记分级结论段留空；输出前校验扩为 13 条，三处清单对齐；SKILL 第 1 步禁止备注写入结论段
 - v1.0.0：首次发布，规则闭环；四份文件（SKILL/template/reference/示例）通过交叉一致性检查。
 
 ## 后续迭代（非本版阻断）
 
-- `SKILL.md` 第 3 步补一句「分级结论标题按 reference.md 第七节选择，本步仅示意 bug/task 排查类」
-- 补 `task-` 类型示例，与 `bug-` 示例并列
-- 补 `CHANGELOG.md`
+- 补 `task-` 类型示例，与 `bug-` 示例并列（`examples/task-xxxxx.md`）
 
 ## 维护
 - 维护者：6peng

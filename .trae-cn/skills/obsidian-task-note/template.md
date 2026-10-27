@@ -22,10 +22,10 @@ priority: <PRIORITY>
 <CORE_ISSUE>
 
 ## 根因分析（最终结论）
-排查中。<INITIAL_DIRECTION>
+
 
 ## 解决方案（最终结论）
-排查中。<PLANNED_ACTIONS>
+
 
 ---
 

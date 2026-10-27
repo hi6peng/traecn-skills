@@ -5,11 +5,17 @@
 ## [Unreleased]
 
 ### 计划中
-- `SKILL.md` 第 5 步补第 12 条校验「frontmatter 取值域合规（status/type/task_type/priority）」，与 README 12 条完全对齐
 - 补 `task-` 类型示例，与 `bug-` 示例并列（`examples/task-xxxxx.md`）
-- `SKILL.md` 第 3 步补说明「分级结论标题按 reference.md 第七节选择，本步仅示意 bug/task 排查类」
 
 ---
+
+## [1.0.1] - 2026-10-27
+
+### 变更
+- 新建笔记分级结论段只保留标题、正文留空；移除 template/SKILL/示例中的"排查中/初步方向/计划动作"预填内容（示例日期块 `### 结果` 的"排查中"属当天记录，保留）
+- 输出前校验由 12 条扩为 13 条，新增「新建笔记分级结论段为空（仅标题）」；SKILL/reference/README 三处清单对齐
+- `SKILL.md` 第 1 步明确禁止将 ps/备注写入根因分析/解决方案段
+- `reference.md` 第七节补充区分说明：`### 结果`（日期块内）允许写"排查中/待验证"，两个分级结论段新建时必须为空
 
 ## [1.0.0] - 2026-10-26
 
