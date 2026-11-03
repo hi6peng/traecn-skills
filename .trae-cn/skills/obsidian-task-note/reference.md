@@ -48,33 +48,23 @@
 
 ---
 
-## 二、标签体系（3–5 个，小写，斜杠分层）
+## 二、标签体系（2–5 个，小写，斜杠分层）
 
-### 工作标签
-`kylin/bug`、`kylin/task`、`kylin/cve`
+**唯一来源：`spec/标签规范.md`**（工作标签、状态、技术分类、内容类型、平台、硬件组件、驱动、工具、图形子类、软件栈）。本文件不再维护第二份分类清单，避免两处各写一套；新增类别只改 spec。
 
-### 技术分类
-`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`、`performance`、`security`、`filesystem`、`memory`、`virtualization`、`accessibility`、`i18n`、`install`、`upgrade`、`stability`、`tty`、`live`
+### 组成要求（2–5 个）
+- **工作/内容类型（至少一个）**：`kylin/bug`、`kylin/task`、`kylin/cve`、`reference`、`important`（另有 `kylin`、`learn`、`todo`）
+- **技术维度（至少一个）**：技术前缀（`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`、`performance`、`security`、`filesystem`、`memory`、`virtualization`、`accessibility`、`i18n`、`install`、`upgrade`、`stability`、`tty`、`live`、`firmware`）、`platform/*`、`component/*`，或分层专名 `driver/*`、`tool/*`、`software/*`、`graphics/*`、`filesystem/*`、`virtualization/*`
+- 上位类裸用（如单独 `graphics`）仅在泛指、不涉及具体对象时可用
 
-### 平台
-`platform/x86`、`platform/loongarch`、`platform/sw64`、`platform/arm`
-
-### 硬件组件
-`component/gpu`、`component/nic`、`component/audio`、`component/storage`、`component/usb`、`component/touchpad`、`component/battery`、`component/serial`
-
-### 分层专名
-具体技术名词必须挂类别分层，不得裸用：`driver/<驱动名>`（i915、loonggpu、mwv207…）、`tool/<工具名>`（lmbench、fio、glmark2…）、`software/<软件名>`（xorg-server、ukui-greeter…）、`graphics/<技术点>`（drm、hdmi、gamma…）；完整表见 `spec/标签规范.md`
-
-### 优先级
-`priority/high`、`priority/medium`、`priority/low`
-
-### 内容类型
-`learn`、`work`、`important`、`todo`、`reference`
-
-**规则：**
+### 写法与禁止项
+- **必须是 YAML 数组，键名必须是 `tags`**：`tags: [kylin/bug, graphics]` ✅；`tag: [...]` ❌（Obsidian 不识别，等于没打标签）；`tags: plymouth` ❌（裸标量）
+- 具体技术名词必须挂类别分层，不得裸用：`i915` ❌ → `driver/i915`；`plymouth` ❌ → `boot/plymouth`
+- 未收录的新名词：先挂最近类别分层；无合适类别时先在 `spec/标签规范.md` 补类别再使用，不得自造体系外标签
+- **不接受 `priority/*` 标签**：优先级只用 frontmatter `priority` 字段（`high` | `medium` | `low`，默认 `medium`）
+- **不接受 `work` 标签**：工作记录用 `kylin/bug`/`kylin/task`/`kylin/cve`/`reference`/`important`
 - status 不写入 tags（`fixed`/`done` 等只在 frontmatter `status` 字段）
-- 3–5 个，全小写，斜杠分层
-- `type=info` 无对应 `kylin/info`，改用 `reference` 或 `work`
+- `type=info` 无对应 `kylin/info`，只用 `reference`
 
 ---
 
@@ -170,16 +160,16 @@
 ---
 
 ## 八、校验清单（13 条）
-- [ ] frontmatter 取值域合规（status/type/task_type/priority）
+- [ ] frontmatter 取值域合规（status/type/task_type），`priority` 字段取值合法（high/medium/low），tags 中不接受 `priority/*` 与 `work`
 - [ ] status 只在 frontmatter，tags 无 `fixed`/`done` 等状态词
 - [ ] 标题无编号/【…】前缀
-- [ ] tags 3–5 个、小写、分层
+- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度
 - [ ] 日期 `## YYYY-MM-DD` 补零，三子标题精确无后缀
 - [ ] `工时: Nh` 在 `### 结果` 末行，格式固定
 - [ ] 块内子点用 `####`/加粗，无 `###` 抢层级
 - [ ] 文件名前缀与 `type` 一致（bug→`bug-`，task→`task-`，cve→`cve-`，info→`info-`）
 - [ ] frontmatter `id` 与文件名一致
 - [ ] `### 结果` 段非空（无结论也写"待验证"等说明）
-- [ ] `type=info` 时 tags 无 `kylin/info`，用 `reference`/`work`
+- [ ] `type=info` 时 tags 无 `kylin/info`，只用 `reference`
 - [ ] 分级结论格式与 `type`+`task_type` 匹配（见第七节）
 - [ ] 新建笔记分级结论段为空（仅标题），无"排查中/初步方向/计划动作"等预填

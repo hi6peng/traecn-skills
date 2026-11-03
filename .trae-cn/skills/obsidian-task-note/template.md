@@ -12,7 +12,7 @@ documents: 0
 packages: 0
 alias: <ALIAS>
 date: <YYYY-MM-DD>
-tags: [<WORK_TAG>, <TECH_TAGS>, priority/<PRIORITY>]
+tags: [<WORK_TAG>, <TECH_TAG>]   # 2-5 个，数组写法；工作类型 + 技术维度；禁 priority/* 与 work
 priority: <PRIORITY>
 ---
 
