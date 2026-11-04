@@ -108,7 +108,8 @@
 > 例外：`tsk-` 前缀（如 `tsk-20260113-1.md`）用于按日期批次的任务，**不参与 `type` 映射**，单独处理。
 
 ### 位置
-- 默认：`kylin/2026/`
+- 默认：`kylin/<当前年份>/`（2026 → `kylin/2026/`，2027 → `kylin/2027/`，逐年新建）
+- bug/task 总结说明：`kylin/<当前年份>/分析说明/{主题}_分析说明.md`，frontmatter 使用 `type: 分析说明`
 - 按主题归档：`kylin/<两位编号>_<中文主题>/`
   - `kylin/00_graphics/`、`kylin/04_kernel/`、`kylin/12_porting/`
 

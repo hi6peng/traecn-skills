@@ -1,4 +1,4 @@
-# obsidian-task-note v1.0.1
+# obsidian-task-note v1.0.2
 
 将用户粘贴的任务描述转换为符合团队规范的 Obsidian Markdown 任务笔记。
 
@@ -28,7 +28,7 @@ obsidian-task-note/
 
 1. 将整个 `obsidian-task-note/` 目录放入 Skill 目录（如 `~/.claude/skills/` 或团队约定的 Skill 根目录）。
 2. 确认 `SKILL.md` 的 frontmatter `name: obsidian-task-note` 与目录名一致。
-3. 在 Obsidian vault 中确认 `kylin/2026/` 目录存在（或按 `target_dir` 指定）。
+3. 在 Obsidian vault 中确认当年份目录 `kylin/<当前年份>/` 存在（2026 → `kylin/2026/`；次年新建 `kylin/2027/`，或按 `target_dir` 指定）。
 4. 无需额外依赖；Skill 不访问网络。
 
 ## 使用
@@ -45,7 +45,7 @@ obsidian-task-note/
 - `task_id`：任务编号（从描述/URL 提取）
 - `priority`：`high` | `medium` | `low`（默认 `medium`）；优先级只用该字段，tags 中不接受 `priority/*`
 - `alias`：一句话摘要（默认从描述提取）
-- `target_dir`：输出目录（默认 `kylin/2026/`）
+- `target_dir`：输出目录（默认 `kylin/<当前年份>/`，如 2026 → `kylin/2026/`）
 
 ### 示例
 
@@ -101,6 +101,7 @@ task_type: 分析
 
 ## 版本
 
+- v1.0.2：工单笔记按年度归集到 `kylin/<当前年份>/`；bug/task 总结说明统一放在 `kylin/<当前年份>/分析说明/`，frontmatter `type: 分析说明`
 - v1.0.1：新建笔记分级结论段留空；输出前校验扩为 13 条，三处清单对齐；SKILL 第 1 步禁止备注写入结论段
 - v1.0.0：首次发布，规则闭环；四份文件（SKILL/template/reference/示例）通过交叉一致性检查。
 

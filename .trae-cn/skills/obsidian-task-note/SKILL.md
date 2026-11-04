@@ -21,7 +21,7 @@ description: 将用户粘贴的任务描述转换为符合团队规范的 Obsidi
 - `task_id`：任务编号（从描述或 URL 中提取，如 `705127`）
 - `priority`：`high` | `medium` | `low`（默认 `medium`）；优先级只用该字段，tags 中不接受 `priority/*`
 - `alias`：一句话摘要（默认从描述提取）
-- `target_dir`：输出目录（默认 `kylin/2026/`）
+- `target_dir`：输出目录（默认 `kylin/<当前年份>/`，如 2026 → `kylin/2026/`）
 
 > ⚠️ Skill **不抓取 URL、不访问网络**。所有信息由用户粘贴提供。缺失必填项时，先向用户追问，不得猜测。
 
@@ -75,7 +75,8 @@ description: 将用户粘贴的任务描述转换为符合团队规范的 Obsidi
 | info | `info-<id>.md` | `info-001.md` |
 
 - 编号类一律用**连字符** `-`，不用下划线
-- 位置：`kylin/2026/`；按主题归档放 `kylin/<两位编号>_<中文主题>/`
+- 位置：`kylin/<当前年份>/`（如 2026 → `kylin/2026/`，2027 → `kylin/2027/`）；按主题归档放 `kylin/<两位编号>_<中文主题>/`
+- bug/task 的总结说明（分析说明）单独放在 `kylin/<当前年份>/分析说明/`，文件名 `{主题}_分析说明.md`，frontmatter 使用 `type: 分析说明`；对应工单笔记用 wikilink 引用
 - 文件名必须含对应前缀（`bug-`/`task-`/`cve-`），否则不进日报统计
 - frontmatter 的 `id` 字段必须与文件名前缀一致（`bug-705127` ↔ `bug-705127.md`）
 

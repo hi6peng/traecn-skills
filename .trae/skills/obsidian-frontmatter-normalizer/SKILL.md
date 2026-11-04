@@ -26,8 +26,10 @@ done
 ### 2. Missing task_type (bug/task notes)
 
 ```bash
-grep -rL "task_type:" kylin/2026 --include="*.md"
+grep -rL "task_type:" kylin --include="bug-*.md" --include="task-*.md" --include="tsk-*.md" --exclude-dir="分析说明"
 ```
+
+> 扫描覆盖所有年度目录（`kylin/2026/`、`kylin/2027/` …）。`kylin/{年份}/分析说明/` 下的总结说明使用 `type: 分析说明`，不要求 `task_type`，故排除。
 
 ### 3. Non-compliant tags (bare technical nouns without category prefix)
 
