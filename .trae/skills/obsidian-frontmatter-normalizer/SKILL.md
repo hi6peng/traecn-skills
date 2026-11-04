@@ -29,12 +29,12 @@ done
 grep -rL "task_type:" kylin --include="bug-*.md" --include="task-*.md" --include="tsk-*.md" --exclude-dir="分析说明"
 ```
 
-> 扫描覆盖所有年度目录（`kylin/2026/`、`kylin/2027/` …）。`kylin/{年份}/分析说明/` 下的总结说明使用 `type: 分析说明`，不要求 `task_type`，故排除。
+> 扫描覆盖所有年度目录（`kylin/2026/`、`kylin/2027/` …）。`kylin/{年份}/分析说明/` 下的笔记仍需 `task_type: 分析`（见 `spec/工作流.md`），但文件名不以 `bug-`/`task-`/`tsk-` 开头，本扫描天然不覆盖，需按需单独核查。
 
 ### 3. Non-compliant tags (bare technical nouns without category prefix)
 
 ```bash
-grep -rn "^tags:" kylin --include="*.md" | grep -vE "kylin/|platform/|driver/|tool/|graphics/|software/|component/|performance|security|filesystem|memory|virtualization|accessibility|i18n|install|upgrade|stability|tty|live|firmware|debug/|learn|reference|important|todo|fixed|done|pending|in-progress|wontfix|kernel|network|boot|systemd|debug|graphics|power"
+grep -rn "^tags:" kylin --include="*.md" | grep -vE "kylin/|platform/|driver/|tool/|graphics/|software/|component/|performance|security|filesystem|memory|virtualization|accessibility|i18n|install|upgrade|stability|tty|live/|live|firmware|debug/|learn|reference|important|todo|kernel|network|boot|systemd|debug|graphics|power"
 ```
 
 ### 3b. Invalid tag key / scalar tags
@@ -44,6 +44,14 @@ grep -rn "^tags:" kylin --include="*.md" | grep -vE "kylin/|platform/|driver/|to
 ```bash
 grep -rnE "^tag:" kylin --include="*.md"
 grep -rnE "^tags:[[:space:]]*[^[]" kylin --include="*.md"
+```
+
+### 3c. Status words used as tags
+
+`fixed`/`done`/`pending`/`in-progress`/`wontfix`/`blocked` must only live in the `status` field, never in `tags`.
+
+```bash
+grep -rnE "^tags:.*[\[, ](fixed|done|pending|in-progress|wontfix|blocked)([,\]]|$)" kylin --include="*.md"
 ```
 
 ### 4. Plaintext credentials
@@ -87,8 +95,10 @@ Add `task_type: <value>` after the `type:` line.
 ### Non-compliant tags
 
 - Bare technical nouns must get a category prefix per `spec/标签规范.md`: `i915` → `driver/i915`, `ltp` → `tool/ltp`, `xorg` → `software/xorg-server`, `lightdm` → `software/lightdm`, `plymouth` → `boot/plymouth`, `squashfs` → `filesystem/squashfs`, `live-build` → `live/live-build`
+- Deprecated tags → replacements (per `spec/标签规范.md`, 废弃表): `software/xorg` → `software/xorg-server`, `driver/d3000m` → `platform/d3000m`, `software/ukui-power-manager` → `software/power-manager`. Existing legacy files are not bulk-renamed; only fix when the file is already being touched
+- Status words must never be tags: `fixed`/`done`/`pending`/`in-progress`/`wontfix`/`blocked` belong only in the `status` frontmatter field — delete the tag and set `status`
 - Tags must be a **YAML array under the key `tags`**: `tags: [a, b]` — never `tag:`, never a bare scalar
-- Keep 2-5 tags per file: at least one work/content type (`kylin/bug`/`kylin/task`/`kylin/cve`/`reference`/`important`) **and** at least one technical dimension (tech prefix / `platform/*` / `component/*` / layered name). Never add tags just to hit the count
+- Keep 2-5 tags per file (count from `spec/标签规范.md`, not 3-5): at least one work/content type (`kylin/bug`/`kylin/task`/`kylin/cve`/`reference`/`important`) **and** at least one technical dimension (tech prefix / `platform/*` / `component/*` / layered name). Never add tags just to hit the count
 - New technical nouns not in the spec: map to the **closest existing layered category** first; if none fits, add the category to `spec/标签规范.md` before using it — never invent out-of-taxonomy tags
 - Tags must not contain `priority/*` or `work` (priority goes in the `priority` field; work records use `kylin/bug`/`kylin/task`/`kylin/cve`/`reference`/`important`)
 - Use `kylin/bug` for bug files, `kylin/task` for task files
@@ -113,4 +123,4 @@ After each batch fix, re-run the detection scans to confirm the count dropped to
 
 - Do not process `note/` learning notes unless explicitly asked — they use a different (`learn`) tag convention
 - Do not remove `contribution: ` empty field in bug/task frontmatter — it is consistent across the vault
-- Do not fill 根因分析/解决方案 sections when `task_type: 分析` — convention says conclusion sections stay empty for analysis tasks
+- Do not pre-fill 根因分析/解决方案 sections for new notes (`status: in-progress`); once conclusions are settled they must be filled — `type: 分析说明` requires `## 分析范围（最终结论）` + `## 分析结论（最终结论）` with content (it has no date blocks or 工时 line)

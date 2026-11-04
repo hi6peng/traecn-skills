@@ -11,7 +11,10 @@
 - 无法复现/不修复：`wontfix`
 
 ### type
-`bug` | `task` | `cve` | `info`
+`bug` | `task` | `cve` | `info` | `分析说明`
+
+- `分析说明`：对外分析文档（`kylin/{年份}/分析说明/`），配 `task_type: 分析`，**不含日期块与工时行**
+- 单条 CVE 用 `type: cve`；一次涉及多个 CVE 的组件级/批次分析用 `type: 分析说明` + `cves:` 回指，不再用 `cve-` 编号
 
 ### task_type
 `开发` | `测试` | `分析` | `沟通` | `文档`
@@ -50,12 +53,14 @@
 
 ## 二、标签体系（2–5 个，小写，斜杠分层）
 
-**唯一来源：`spec/标签规范.md`**（工作标签、状态、技术分类、内容类型、平台、硬件组件、驱动、工具、图形子类、软件栈）。本文件不再维护第二份分类清单，避免两处各写一套；新增类别只改 spec。
+**唯一来源：`spec/标签规范.md`**（工作标签、状态、技术分类、内容类型、平台、硬件组件、驱动、工具、图形子类、启动子类、镜像子类、软件栈）。本文件不再维护第二份分类清单，避免两处各写一套；新增类别、废弃项与替代项只改 spec（如 `software/xorg`→`software/xorg-server`、`driver/d3000m`→`platform/d3000m`、`software/ukui-power-manager`→`software/power-manager`）。
 
 ### 组成要求（2–5 个）
+- 数量口径以 `spec/标签规范.md` 为单一来源：2–5 个，不是 3–5
 - **工作/内容类型（至少一个）**：`kylin/bug`、`kylin/task`、`kylin/cve`、`reference`、`important`（另有 `kylin`、`learn`、`todo`）
-- **技术维度（至少一个）**：技术前缀（`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`、`performance`、`security`、`filesystem`、`memory`、`virtualization`、`accessibility`、`i18n`、`install`、`upgrade`、`stability`、`tty`、`live`、`firmware`）、`platform/*`、`component/*`，或分层专名 `driver/*`、`tool/*`、`software/*`、`graphics/*`、`filesystem/*`、`virtualization/*`
+- **技术维度（至少一个）**：技术前缀（`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`、`performance`、`security`、`filesystem`、`memory`、`virtualization`、`accessibility`、`i18n`、`install`、`upgrade`、`stability`、`tty`、`live`、`firmware`）、`platform/*`、`component/*`，或分层专名 `driver/*`、`tool/*`、`software/*`、`graphics/*`、`boot/*`、`live/*`、`filesystem/*`、`virtualization/*`
 - 上位类裸用（如单独 `graphics`）仅在泛指、不涉及具体对象时可用
+- **`note/` 学习笔记不适用本节**：走自身 `learn` 约定，允许 1–2 个自由技术词（如 `命令行`、`kernel`），不受「工作类型 + 技术维度 + 2–5 个」约束
 
 ### 写法与禁止项
 - **必须是 YAML 数组，键名必须是 `tags`**：`tags: [kylin/bug, graphics]` ✅；`tag: [...]` ❌（Obsidian 不识别，等于没打标签）；`tags: plymouth` ❌（裸标量）
@@ -81,35 +86,42 @@
 - 三个子标题**精确**为 `### 进展` / `### 结果` / `### 下一步`，**不加冒号或括号**
   - `### 结果：`、`### 进展（10-22）` 会导致整段取不到
 - 块内子点用 `####` 或加粗，**不得用 `###` 抢层级**
-- `### 结果` 末行写 `工时: Nh`（允许小数 `3.5h`），格式固定：
-  - ✅ `工时: 3h`、`工时: 3.5h`
-  - ❌ `工时：3小时`、`耗时3h`、另起 `### 工时` 段
+- `### 结果` 末行写 `工时: <数字>h`，格式固定：
+  - ✅ `工时: 3h`、`工时: 3.5h`（小数合法）
+  - ❌ `工时: 3.0` / `工时: 6.0`（缺 `h` 单位）、`工时 : 1h`（冒号前空格）、`工时:1h`（冒号后无空格）、`工时: 6 h`（数字与 `h` 间有空格）、`工时：3小时`、`耗时3h`、另起 `### 工时` 段
 - `### 结果` 当天无结论也要写一句（如"待验证"），不留空
 - `### 下一步` 用 `- [ ]` 待办写法
+- **`### 下一步` 豁免**：结项当天（`status: done`/`fixed`/`wontfix`）可省略 `### 下一步`，或只写一行「未记录（已结项）」；但 `### 结果` 与末行工时仍必须有
+- **重复判据**：同一日期块内 `### 进展` 与 `### 结果` 正文相似度 ≥0.85 视为重复（自检项），人工确认后合并：过程留在进展、结论留在结果
+- `type: 分析说明` 不含日期块与末行工时
 
 ---
 
 ## 五、文件命名与位置
 
-### 文件名前缀由 type 决定
+### 文件名由 type 决定
 
 | type | 文件名格式 | 示例 |
 |---|---|---|
 | bug | `bug-<id>.md` | `bug-705127.md` |
 | task | `task-<id>.md` | `task-705127.md` |
-| cve | `cve-<id>.md` | `cve-20261026.md` |
+| cve（单条） | `CVE-YYYY-NNNN.md` | `CVE-2024-52533.md` |
+| cve（多 CVE 批次分析） | `<组件>_CVE_分析_YYYYMMDD.md`（`type: 分析说明`） | `xorg_server_CVE_分析_20250814.md` |
 | info | `info-<id>.md` | `info-001.md` |
+| 分析说明 | `{主题}_分析说明.md` | `GP201_startx_分析说明.md` |
 
 - 编号类用**连字符** `-`，不用下划线（`bug_705127.md` ❌）
-- 文件名必须含对应前缀，否则不进 `kylin/日报提取.md` 统计
-- frontmatter `id` 必须与文件名一致（`bug-705127` ↔ `bug-705127.md`）
+- 单条 CVE 用官方编号 `CVE-YYYY-NNNN.md`；**校验只对 `CVE-` 前缀强校验 `CVE-\d{4}-\d{4,}`**，其他 CVE 相关文件名不报警
+- 多 CVE 批次分析**禁止 `CVE_` 伪编号**，用 `<组件>_CVE_分析_YYYYMMDD.md` + `type: 分析说明` + `cves:` 回指各编号笔记；存量 `CVE_xxx_yyyymmdd.md` 保留原名不要求改名
+- 文件名必须含 `bug-`/`task-`/`tsk-` 才进 `kylin/日报提取.md` 统计；`CVE-`、`cve-` 与 `{主题}_分析说明` 不进统计，需另行处理
+- frontmatter `id` 必须与文件名一致（`bug-705127` ↔ `bug-705127.md`）；`type: 分析说明` 规范未定义 `id`，不强制
 - 模板占位符约定: <PREFIX> == <TYPE>；<WORK_TAG>：bug→kylin/bug、task→kylin/task、cve→kylin/cve、info→reference
 
 > 例外：`tsk-` 前缀（如 `tsk-20260113-1.md`）用于按日期批次的任务，**不参与 `type` 映射**，单独处理。
 
 ### 位置
 - 默认：`kylin/<当前年份>/`（2026 → `kylin/2026/`，2027 → `kylin/2027/`，逐年新建）
-- bug/task 总结说明：`kylin/<当前年份>/分析说明/{主题}_分析说明.md`，frontmatter 使用 `type: 分析说明`
+- bug/task 总结说明：`kylin/<当前年份>/分析说明/{主题}_分析说明.md`，frontmatter 使用 `type: 分析说明` + `task_type: 分析`，不含日期块与工时行
 - 按主题归档：`kylin/<两位编号>_<中文主题>/`
   - `kylin/00_graphics/`、`kylin/04_kernel/`、`kylin/12_porting/`
 
@@ -151,8 +163,14 @@
 ### 主维度：type = cve
 沿用 bug/task 规则，按 `task_type` 选上表。
 
+### 主维度：type = 分析说明（对外分析文档）
+| task_type | 分级结论格式 |
+|---|---|
+| 分析 | `## 分析范围（最终结论）` + `## 分析结论（最终结论）` |
+
 ### 说明
-- 「分析类」「测试类」是 `task_type` 的值，**不是 `type` 的值**；`type` 只有 bug/task/cve/info。
+- 「分析类」「测试类」是 `task_type` 的值，**不是 `type` 的值**；`type` 取值域为 bug/task/cve/info/分析说明。
+- `type: 分析说明` 只与 `task_type: 分析` 搭配，且不含日期块与工时行。
 - 新写笔记统一补 `（最终结论）` 后缀。
 - 无法复现类：在「根因分析（最终结论）」描述测试情况，「解决方案（最终结论）」写"问题无法复现"（此为结论已定后的回填写法，非新建预填）。
 - 新建笔记时两个分级结论段**只保留标题、正文留空**，待有结论后回填；不得预填"排查中""待验证"等占位说明。未处理状态由 frontmatter `status: in-progress` 表达。
@@ -160,17 +178,19 @@
 
 ---
 
-## 八、校验清单（13 条）
+## 八、校验清单（15 条）
 - [ ] frontmatter 取值域合规（status/type/task_type），`priority` 字段取值合法（high/medium/low），tags 中不接受 `priority/*` 与 `work`
-- [ ] status 只在 frontmatter，tags 无 `fixed`/`done` 等状态词
+- [ ] status 只在 frontmatter，tags 无 `fixed`/`done`/`pending`/`in-progress`/`wontfix`/`blocked` 等状态词
 - [ ] 标题无编号/【…】前缀
-- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度
-- [ ] 日期 `## YYYY-MM-DD` 补零，三子标题精确无后缀
-- [ ] `工时: Nh` 在 `### 结果` 末行，格式固定
+- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（数量口径以 `spec/标签规范.md` 为准；`note/` 学习笔记不受此限）
+- [ ] 日期 `## YYYY-MM-DD` 补零，子标题精确无后缀；结项当天 `### 下一步` 可省略或写「未记录（已结项）」
+- [ ] 工时行严格为 `工时: <数字>h`，位于 `### 结果` 末行（`3h`/`3.5h` 合法；`3.0`/`6.0`、`工时 :`、`工时:3h`、`6 h` 不合规）
+- [ ] 同一日期块内 `### 进展` 与 `### 结果` 相似度 <0.85，或已人工确认合并
 - [ ] 块内子点用 `####`/加粗，无 `###` 抢层级
-- [ ] 文件名前缀与 `type` 一致（bug→`bug-`，task→`task-`，cve→`cve-`，info→`info-`）
-- [ ] frontmatter `id` 与文件名一致
+- [ ] 文件名：bug→`bug-`、task→`task-`、info→`info-`；单条 CVE 匹配 `CVE-\d{4}-\d{4,}`；多 CVE 批次分析为 `<组件>_CVE_分析_YYYYMMDD.md` 且无 `CVE_` 伪编号；`type: 分析说明` 为 `{主题}_分析说明.md`
+- [ ] frontmatter `id` 与文件名一致（`type: 分析说明` 不强制 `id`）
 - [ ] `### 结果` 段非空（无结论也写"待验证"等说明）
 - [ ] `type=info` 时 tags 无 `kylin/info`，只用 `reference`
-- [ ] 分级结论格式与 `type`+`task_type` 匹配（见第七节）
+- [ ] 分级结论格式与 `type`+`task_type` 匹配（含 `type: 分析说明` → 分析范围/分析结论）
 - [ ] 新建笔记分级结论段为空（仅标题），无"排查中/初步方向/计划动作"等预填
+- [ ] `type: 分析说明` 配 `task_type: 分析`，不含日期块与工时行
