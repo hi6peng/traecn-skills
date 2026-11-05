@@ -34,7 +34,7 @@ grep -rL "task_type:" kylin --include="bug-*.md" --include="task-*.md" --include
 ### 3. Non-compliant tags (bare technical nouns without category prefix)
 
 ```bash
-grep -rn "^tags:" kylin --include="*.md" | grep -vE "kylin/|platform/|driver/|tool/|graphics/|software/|component/|performance|security|filesystem|memory|virtualization|accessibility|i18n|install|upgrade|stability|tty|live/|live|firmware|debug/|learn|reference|important|todo|kernel|network|boot|systemd|debug|graphics|power"
+grep -rn "^tags:" kylin --include="*.md" | grep -vE "kylin/|platform/|driver/|tool/|graphics/|software/|component/|performance|security|filesystem|memory|virtualization|accessibility|i18n|install|upgrade|stability|tty|live/|live|firmware|debug/|reference|important|todo|kernel|network|boot|systemd|debug|graphics|power"
 ```
 
 ### 3b. Invalid tag key / scalar tags
@@ -53,6 +53,16 @@ grep -rnE "^tags:[[:space:]]*[^[]" kylin --include="*.md"
 ```bash
 grep -rnE "^tags:.*[\[, ](fixed|done|pending|in-progress|wontfix|blocked)([,\]]|$)" kylin --include="*.md"
 ```
+
+### 3d. `note/` tag shape (optional, only when explicitly asked)
+
+`note/` is an isolated namespace: `learn/<域>/<主题>` (2–3 segments), open vocabulary, **no whitelist**, never mixed with kylin prefixes. Check shape only — do not apply the kylin closed vocabulary.
+
+```bash
+grep -rn "^tags:" note --include="*.md"
+```
+
+Flag as non-compliant: not starting with `learn/`; segment count outside 2–3; empty segment (`learn//tcp`); duplicate tag; tag count outside 1–5; bare `learn` used as a standalone tag; kylin prefix (`platform/`, `driver/`, `component/`, `software/`, `boot/`, `tool/` …) used inside `note/`.
 
 ### 4. Plaintext credentials
 
@@ -121,6 +131,6 @@ After each batch fix, re-run the detection scans to confirm the count dropped to
 
 ## Do Not
 
-- Do not process `note/` learning notes unless explicitly asked — they use a different (`learn`) tag convention
+- Do not process `note/` learning notes unless explicitly asked — they use an isolated `learn/<域>/<主题>` namespace (2–3 segments, 1–5 tags, open vocabulary, shape-only check); never apply kylin's closed vocabulary or work-type/technical-dimension rules there
 - Do not remove `contribution: ` empty field in bug/task frontmatter — it is consistent across the vault
 - Do not pre-fill 根因分析/解决方案 sections for new notes (`status: in-progress`); once conclusions are settled they must be filled — `type: 分析说明` requires `## 分析范围（最终结论）` + `## 分析结论（最终结论）` with content (it has no date blocks or 工时 line)

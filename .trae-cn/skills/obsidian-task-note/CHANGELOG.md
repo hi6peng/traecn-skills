@@ -9,6 +9,17 @@
 
 ---
 
+## [1.0.4] - 2026-11-05
+
+### 变更
+- `note/` 标签改用 `learn/` 根命名空间：形态 `learn/<域>/<主题>`（2–3 段），词表开放、不做白名单，与 kylin 前缀（`platform/`、`driver/`、`component/`、`software/`、`boot/`、`tool/` 等）互不重叠
+- 删除裸 `learn` 作为独立工作类型标签（层级根已包含在每条标签内）
+- `note/` 只校验形状（以 `learn/` 开头、2–3 段、无空段、无重复、数量 1–5），不查词表；kylin/ 侧规则不变（闭合词表 + 强校验 + 2–5 + 工作类型/技术维度）
+- 替换旧表述「note/ 适用 learn 约定、允许 1–2 个自由技术词」；SKILL/reference/README 三处校验清单同步
+- 版本号顺延 1.0.3 → 1.0.4
+
+---
+
 ## [1.0.3] - 2026-11-04
 
 ### 变更
@@ -17,7 +28,7 @@
 - 工时校验收紧为 `工时: <数字>h`：新增不合规样例 `3.0`/`6.0`（缺 h）、`工时 :`（冒号前空格）、`工时:3h`（冒号后无空格）、`6 h`（数字与 h 间空格）；修正示例 `工时: 0.5` → `工时: 0.5h`
 - 日期块补 `### 下一步` 结项豁免（`status: done`/`fixed`/`wontfix` 可省略或写「未记录（已结项）」，`### 结果` 与工时仍必须）
 - 补重复判据：同块 `### 进展` 与 `### 结果` 正文相似度 ≥0.85 视为重复（自检项，人工确认后合并）
-- 标签数量口径明确以 `spec/标签规范.md` 为单一来源（2–5，非 3–5）；补 `note/` 学习笔记 `learn` 约定豁免（允许 1–2 个自由技术词）；标签表新增/废弃项改由 spec 单一维护（含 `software/xorg`→`software/xorg-server`、`driver/d3000m`→`platform/d3000m`、`software/ukui-power-manager`→`software/power-manager`）
+- 标签数量口径明确以 `spec/标签规范.md` 为单一来源（2–5，非 3–5）；补 `note/` 学习笔记 `learn` 约定豁免（允许 1–2 个自由技术词）〔已被 v1.0.4 取代：改为 `learn/<域>/<主题>` 形状校验〕；标签表新增/废弃项改由 spec 单一维护（含 `software/xorg`→`software/xorg-server`、`driver/d3000m`→`platform/d3000m`、`software/ukui-power-manager`→`software/power-manager`）
 - 输出前校验由 13 条扩为 15 条（新增日期块结项豁免与重复判据、命名规则合并且覆盖 CVE/分析说明）；SKILL/reference/README 三处清单同步
 - README「规则来源」改为实际路径 `spec/*.md`，移除不存在的 `模板-12345.md`
 

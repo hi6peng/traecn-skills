@@ -89,7 +89,7 @@ description: 将用户粘贴的任务描述转换为符合团队规范的 Obsidi
 - [ ] frontmatter 取值域合规（status/type/task_type），`priority` 字段取值合法（high/medium/low），tags 中不接受 `priority/*` 与 `work`
 - [ ] status 只在 frontmatter，tags 无 `fixed`/`done`/`pending`/`in-progress`/`wontfix`/`blocked` 等状态词
 - [ ] 标题无编号/【…】前缀
-- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（数量口径以 `spec/标签规范.md` 为准；`note/` 学习笔记走自身 `learn` 约定，不受此限）
+- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（数量口径以 `spec/标签规范.md` 为准；`note/` 不适用本条，走 `learn/<域>/<主题>` 形状校验：2–3 段、1–5 个、词表开放）
 - [ ] 日期 `## YYYY-MM-DD` 补零，子标题精确无后缀；结项当天（`status: done`/`fixed`/`wontfix`）`### 下一步` 可省略或写「未记录（已结项）」
 - [ ] 工时行严格为 `工时: <数字>h`，位于 `### 结果` 末行（`3h`/`3.5h` 合法；`3.0`/`6.0`、`工时 :`、`工时:3h`、`6 h` 均不合规）
 - [ ] 同一日期块内 `### 进展` 与 `### 结果` 相似度 <0.85，或已人工确认合并（过程留进展、结论留结果）

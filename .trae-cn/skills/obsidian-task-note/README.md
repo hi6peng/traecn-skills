@@ -1,4 +1,4 @@
-# obsidian-task-note v1.0.3
+# obsidian-task-note v1.0.4
 
 将用户粘贴的任务描述转换为符合团队规范的 Obsidian Markdown 任务笔记。
 
@@ -73,7 +73,7 @@ task_type: 分析
 - [ ] frontmatter 取值域合规（status/type/task_type），`priority` 字段取值合法（high/medium/low），tags 中不接受 `priority/*` 与 `work`
 - [ ] status 只在 frontmatter，tags 无 `fixed`/`done`/`pending`/`in-progress`/`wontfix`/`blocked` 等状态词
 - [ ] 标题无编号/【…】前缀
-- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（`note/` 学习笔记不受此限）
+- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（`note/` 不适用本条，走 `learn/<域>/<主题>` 形状校验：2–3 段、1–5 个、词表开放）
 - [ ] 日期 `## YYYY-MM-DD` 补零，子标题精确无后缀；结项当天 `### 下一步` 可省略或写「未记录（已结项）」
 - [ ] 工时行严格为 `工时: <数字>h`，位于 `### 结果` 末行（`3h`/`3.5h` 合法；`3.0`/`6.0`、`工时 :`、`工时:3h`、`6 h` 不合规）
 - [ ] 同一日期块内 `### 进展` 与 `### 结果` 相似度 <0.85，或已人工确认合并
@@ -103,10 +103,12 @@ task_type: 分析
 - **单条 CVE**：文件名 `CVE-YYYY-NNNN.md`，只对 `CVE-` 前缀强校验 `CVE-\d{4}-\d{4,}`。
 - **多 CVE 批次分析**：`<组件>_CVE_分析_YYYYMMDD.md` + `type: 分析说明` + `cves:` 回指，禁止 `CVE_` 伪编号。
 - **`CVE-`/`cve-` 与分析说明笔记**：文件名不含 `bug-`/`task-`/`tsk-`，不进 `kylin/日报提取.md` 统计，需另行处理。
+- **`note/` 学习笔记标签**：`learn/<域>/<主题>`（2–3 段，根固定 `learn/`，数量 1–5，词表开放）；与 kylin 前缀互不重叠，不再使用裸 `learn` 作为独立标签。
 
 ## 版本
 
-- v1.0.3：对齐 2026-11-04 spec——`type` 补 `分析说明`；CVE 命名改为 `CVE-YYYY-NNNN.md` / `<组件>_CVE_分析_YYYYMMDD.md`；工时校验收紧为 `工时: <数字>h`；补 `### 下一步` 结项豁免、进展/结果相似度 ≥0.85 重复判据、`note/` learn 约定豁免；校验 13 → 15 条
+- v1.0.4：`note/` 标签改用 `learn/` 根命名空间——形态 `learn/<域>/<主题>`（2–3 段、1–5 个、词表开放、只查形状）；与 kylin 前缀隔离；删除裸 `learn` 独立标签与「1–2 个自由技术词」旧表述
+- v1.0.3：对齐 2026-11-04 spec——`type` 补 `分析说明`；CVE 命名改为 `CVE-YYYY-NNNN.md` / `<组件>_CVE_分析_YYYYMMDD.md`；工时校验收紧为 `工时: <数字>h`；补 `### 下一步` 结项豁免、进展/结果相似度 ≥0.85 重复判据；校验 13 → 15 条
 - v1.0.2：工单笔记按年度归集到 `kylin/<当前年份>/`；bug/task 总结说明统一放在 `kylin/<当前年份>/分析说明/`，frontmatter `type: 分析说明`
 - v1.0.1：新建笔记分级结论段留空；输出前校验扩为 13 条，三处清单对齐；SKILL 第 1 步禁止备注写入结论段
 - v1.0.0：首次发布，规则闭环；四份文件（SKILL/template/reference/示例）通过交叉一致性检查。

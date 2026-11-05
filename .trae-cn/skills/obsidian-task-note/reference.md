@@ -57,10 +57,16 @@
 
 ### 组成要求（2–5 个）
 - 数量口径以 `spec/标签规范.md` 为单一来源：2–5 个，不是 3–5
-- **工作/内容类型（至少一个）**：`kylin/bug`、`kylin/task`、`kylin/cve`、`reference`、`important`（另有 `kylin`、`learn`、`todo`）
+- **工作/内容类型（至少一个）**：`kylin/bug`、`kylin/task`、`kylin/cve`、`reference`、`important`（另有 `kylin`、`todo`）
 - **技术维度（至少一个）**：技术前缀（`kernel`、`network`、`graphics`、`power`、`boot`、`systemd`、`debug`、`performance`、`security`、`filesystem`、`memory`、`virtualization`、`accessibility`、`i18n`、`install`、`upgrade`、`stability`、`tty`、`live`、`firmware`）、`platform/*`、`component/*`，或分层专名 `driver/*`、`tool/*`、`software/*`、`graphics/*`、`boot/*`、`live/*`、`filesystem/*`、`virtualization/*`
 - 上位类裸用（如单独 `graphics`）仅在泛指、不涉及具体对象时可用
-- **`note/` 学习笔记不适用本节**：走自身 `learn` 约定，允许 1–2 个自由技术词（如 `命令行`、`kernel`），不受「工作类型 + 技术维度 + 2–5 个」约束
+
+### `note/` 标签口径（与 kylin/ 隔离）
+- 形态：`learn/<域>/<主题>`，2–3 段，根固定为 `learn/`；**词表开放、不做白名单**，只查形状
+- `learn/` 命名空间与 kylin 前缀（`platform/`、`driver/`、`component/`、`software/`、`boot/`、`tool/` 等）互不重叠，note/ 不使用这些前缀
+- **不再保留裸 `learn` 作为独立工作类型标签**：层级根已包含在每条标签里
+- 数量 1–5；校验只查形状：以 `learn/` 开头、2–3 段、无空段、无重复
+- 示例：`learn/命令行/grep`、`learn/内核/perf`、`learn/网络/tcp`；❌ `learn`、`learn/命令行/grep/grep`、`learn//tcp`、`kernel`
 
 ### 写法与禁止项
 - **必须是 YAML 数组，键名必须是 `tags`**：`tags: [kylin/bug, graphics]` ✅；`tag: [...]` ❌（Obsidian 不识别，等于没打标签）；`tags: plymouth` ❌（裸标量）
@@ -182,7 +188,7 @@
 - [ ] frontmatter 取值域合规（status/type/task_type），`priority` 字段取值合法（high/medium/low），tags 中不接受 `priority/*` 与 `work`
 - [ ] status 只在 frontmatter，tags 无 `fixed`/`done`/`pending`/`in-progress`/`wontfix`/`blocked` 等状态词
 - [ ] 标题无编号/【…】前缀
-- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（数量口径以 `spec/标签规范.md` 为准；`note/` 学习笔记不受此限）
+- [ ] tags 2–5 个、小写、分层；YAML 数组写法且键名为 `tags`（不得 `tag:` 或裸标量）；至少一个工作类型 + 一个技术维度（数量口径以 `spec/标签规范.md` 为准；`note/` 不适用本条，走 `learn/<域>/<主题>` 形状校验：2–3 段、1–5 个、词表开放）
 - [ ] 日期 `## YYYY-MM-DD` 补零，子标题精确无后缀；结项当天 `### 下一步` 可省略或写「未记录（已结项）」
 - [ ] 工时行严格为 `工时: <数字>h`，位于 `### 结果` 末行（`3h`/`3.5h` 合法；`3.0`/`6.0`、`工时 :`、`工时:3h`、`6 h` 不合规）
 - [ ] 同一日期块内 `### 进展` 与 `### 结果` 相似度 <0.85，或已人工确认合并
